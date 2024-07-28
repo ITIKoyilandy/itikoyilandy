@@ -160,7 +160,7 @@
                         </div> -->
 
                         
-                      <a href="" target="_blank">  <img id="myImg" alt="layer" src="./images/itiqly.png" /> </a>
+                      <a href="" target="_blank">  <img id="myImg" alt="layer" src="./images/banner_2024_1.png" /> </a>
                         
                         
                     </div>
@@ -462,27 +462,31 @@ main_menu.init("main_menu","menuhover");
     function changeImage()
     {
         //alert('hey...')
-        if(index==1){
+	    if(index==1){
+		    
+		     document.getElementById("myImg").src="./images/banner_2024_1.png.png";
+	    }
+        if(index==2){
             document.getElementById("myImg").src="./images/itiqly.png";
         }
-        if(index==2){
+        if(index==3){
             document.getElementById("myImg").src="./images/award.png";
         }
-        if(index==3){
+        if(index==4){
             document.getElementById("myImg").src="./images/jobhunt.png";
         }
-        if(index==4){
+        if(index==5){
             document.getElementById("myImg").src="./images/model.png";
         }
-        if(index==5){
+        if(index==6){
             document.getElementById("myImg").src="./images/yoga.png";
         }
-        if(index==6){
+        if(index==7){
             document.getElementById("myImg").src="./images/ivisit.png";
         }
         //document.getElementById("myImg").src="./images/bannernew"+index+".jpg";
         index++
-        if(index>6)
+        if(index>7)
        {
             index=1;
         }
