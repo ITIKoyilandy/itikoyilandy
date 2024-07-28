@@ -26,7 +26,7 @@
 
 
 <!-- <body onload="changeImage()"> -->
-	<body> 
+	<body onload="changeImage()"> 
 
 <!--Wrapper Start-->
 <div id="wrapper">
@@ -189,7 +189,7 @@
             <div class="ticker">
                 <div class="title"><h5>Latest News</h5></div>
                 <div class="msg">
-                    <marquee onmouseover="this.stop()" onmouseout="this.start()"><a href="./images/qt7.pdf" target="_blank"> ITI  Admission 2024 - Provisional Rank List Published. <a href="pdf/ranklist.pdf"> Click here</a>" &nbsp;
+                    <marquee onmouseover="this.stop()" onmouseout="this.start()"><a href="./images/qt7.pdf" target="_blank"> ITI  Admission 2024 - Provisional Rank List Published. <a href="pdf/ranklist.pdf" style="color:rgb(255, 100, 9);"> Click here to view </a> &nbsp;
 			    </h3></a></marquee>
                 </div>
             </div>
@@ -237,8 +237,8 @@
 <div class="news-list">
 <div class="news-image"><img src="images/news-image1.png" width="75" height="61" alt="" /></div>
 <div class="news-text">
-<h2>Trainees Election<span>17.02.2023</span></h2>
-<p>Trainees Election is on 17.02.2023</p>
+<h2>Award Day<span>25.07.2024</span></h2>
+<p>Award Day  is on 25.07.2024</p>
 </div>
 </div>
 <!--News1 End-->
@@ -248,7 +248,7 @@
 <div class="news-image"><img src="images/verification.jpg" width="75" height="61" alt="" /></div>
 <div class="news-text">
 <h2>Industrial Visit AND OJT<span>20.02.2023</span></h2>
-<p>COPA & DTPO OJT is on various Grama Panchayaths</p>
+<p>COPA  is in Network Industry</p>
 </div>
 </div>
 <!--News2 End-->
@@ -257,8 +257,8 @@
 <div class="news-list" style="background:none;">
 <div class="news-image"><img src="images/news-image3.png" width="75" height="61" alt="" /></div>
 <div class="news-text">
-<h2>AITT CBT 2023<span>01.06.2023</span></h2>
-<p>Practical Exam starts on 01.06.2023</p>
+<h2>AITT CBT 2024<span>07.08.2024</span></h2>
+<p>Practical Exam starts on 01.08.2024</p>
 </div>
 </div>
 <!--News3 End-->
@@ -274,9 +274,9 @@
 
 <!--Event3 Start-->
 <div class="calender-list" style="background:none;">
-    <div class="calender-image"> <span>Feb <br />17</span></div>
+    <div class="calender-image"> <span>Sep <br />30</span></div>
     <div class="calender-text">
-    <h2>Trainees Election <span>Date: 17-02-2023</span></h2>
+    <h2>Admission 2024 <span>Date: 30-07-2024</span></h2>
     <p><a href="#">Read more about this event +</a></p>
     </div>
     </div>
@@ -285,9 +285,9 @@
 
 <!--Event1 Start-->
 <div class="calender-list">
-<div class="calender-image"> <span>Jun <br />1</span></div>
+<div class="calender-image"> <span>Aug <br />1</span></div>
 <div class="calender-text">
-<h2>Trade Practical Exam <span>9:00 am – 5:00 pm</span></h2>
+<h2>Trade Practical Exam <span>9:00 am – 6:00 pm</span></h2>
 <p><a href="#">Read more about this event +</a></p>
 </div>
 </div>
@@ -295,9 +295,9 @@
 
 <!--Event2 Start-->
 <div class="calender-list">
-<div class="calender-image"> <span>Feb <br />20</span></div>
+<div class="calender-image"> <span>Sep <br />20</span></div>
 <div class="calender-text">
-<h2>OJT <span>starts from Feb 20 onwards</span></h2>
+<h2>Class <span>starts from Sep 20 onwards</span></h2>
 <p><a href="#">Read more about this event +</a></p>
 </div>
 </div>
@@ -462,9 +462,27 @@ main_menu.init("main_menu","menuhover");
     function changeImage()
     {
         //alert('hey...')
-        document.getElementById("myImg").src="./images/bannernew"+index+".jpg";
+        if(index==1){
+            document.getElementById("myImg").src="./images/itiqly.png";
+        }
+        if(index==2){
+            document.getElementById("myImg").src="./images/award.png";
+        }
+        if(index==3){
+            document.getElementById("myImg").src="./images/jobhunt.png";
+        }
+        if(index==4){
+            document.getElementById("myImg").src="./images/model.png";
+        }
+        if(index==5){
+            document.getElementById("myImg").src="./images/yoga.png";
+        }
+        if(index==6){
+            document.getElementById("myImg").src="./images/ivisit.png";
+        }
+        //document.getElementById("myImg").src="./images/bannernew"+index+".jpg";
         index++
-        if(index>2)
+        if(index>6)
        {
             index=1;
         }
