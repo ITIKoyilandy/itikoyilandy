@@ -1,0 +1,43 @@
+.backtotest,
+.finishtest
+{
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    background-color: #0073b7;
+    color: white;
+}
+
+
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #f8f9fa;
+    /*background-color: rgba(0,0,0,0.4);*/
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.modal-body{
+    text-align:center;
+    color: #ff1111;
+}
