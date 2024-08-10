@@ -1,0 +1,225 @@
+<?php
+    session_start();
+    if(isset($_SESSION['startexam']))
+    {
+        session_destroy();
+        session_start();
+        $_SESSION['quizz']='1';
+    }
+    else
+    {
+        session_destroy();
+        header('location:login.php');     
+    }
+   
+?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MOCK TEST</title>
+            <link rel="stylesheet" href="styles.css">
+            <script src="script/script1.js"></script>
+            <script src="jquery.js"></script>
+            <script src="date.js"></script>
+            <style>
+            
+            th{
+                background-color: #04AA6D;
+                color:white;
+            }
+            button{
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    background-color: #04AA6D;
+                    color: #fff;
+                    font-size: 16px;
+                    cursor: pointer;
+                    margin-right: 35px;
+                    margin-left: 35px;
+            }
+            button:hover{
+                background-color: #0056B3;
+            }
+    </style>
+        </head>
+        <body> 
+        <div class="header">
+        <div class="date">
+            <p id="dateshow"></p>
+        </div>
+    </div>
+    <div class="subheader">
+        <img src="images/logo.png" alt="Logo" class="logo">
+        <div class="header-text">
+            <h1>CTS Model Examination - Govt. ITI Koyilandy</h1>
+        </div>
+    </div>    
+        
+        
+        <center>
+            <br><br><br>
+            <table id="tbltraineedata" style="font-size: 20px;">
+                <tr>
+                    <td> Roll No: </td>
+                    <td> <input type="text" id="txtrollno" readonly style="font-size: 18px; border:none;"> </td>
+                </tr>
+                <tr>
+                    <td> Name: </td>
+                    <td> <input type="text" id="txtname" readonly style="font-size: 18px; border:none;"> </td>
+                </tr>
+                <tr>
+                    <td> Trade: </td>
+                    <td> <input type="text" id="txttrade" readonly style="font-size: 18px; border:none;"> </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <table  border="1" style="text-align: center; border-collapse:  collapse; font-size: 20px;" id="mytable">
+                <tr>
+                    <th width="350"> Subject </th>
+                    <th width="250"> No. of Questions </th>
+                    <th width="250"> Max. Marks </th>
+                </tr>
+            </table>
+            <br>
+            <button type="submit"  onclick="startexam()">Start Exam </button>
+        
+        
+        </center>
+        </body>
+        
+        
+        <script>
+            
+                 $(document).ready(function(){
+                    
+                    var rollno=sessionStorage.getItem('rollno');
+                    document.getElementById('txtrollno').value=rollno;
+                   document.getElementById('txtname').value="Nasriya N S";
+                   document.getElementById('txttrade').value="COPA";
+                   sessionStorage.setItem('trade', "COPA");
+                   sessionStorage.setItem('year', "1");
+                   sessionStorage.setItem('name', "Nasriya N S");
+                    
+                
+
+                   var table=document.getElementById("mytable");
+                   var row=table.insertRow();
+                   var cell1=row.insertCell(0);
+                   var cell2=row.insertCell(1);
+                   var cell3=row.insertCell(2);
+                   
+                        cell1.innerHTML="Trade Theory";
+                        cell2.innerHTML="50";
+                        cell3.innerHTML="100";
+                            row=table.insertRow();
+                            var cell1=row.insertCell(0);
+                            var cell2=row.insertCell(1);
+                            var cell3=row.insertCell(2);
+                            cell1.innerHTML="Employability Skills";
+                            cell2.innerHTML="25";
+                            cell3.innerHTML="50";
+                   });
+
+                 function startexam()
+                 {
+                    //var now=new Date();
+                    //var h=now.getHours();
+                    //var m=now.getMinutes();
+                    window.location.href="quizz.html";
+                    /*
+                    var examsession;
+                    if(h<9)
+                    {
+                        examsession='s1';
+                    }
+                    else if(h<11)
+                    {
+                        examsession='s2';
+                    }
+                    else if(h<12)
+                    {
+                        examsession='s3';
+                    }
+                    else if(h<13)
+                    {
+                        examsession='s4';
+                    }
+                    else if(h<15)
+                    {
+                        examsession='s5';
+                    }
+
+
+                    if(examsession=='s1'){
+                        if(h==8 && m>=30)
+                        {
+                            window.location.href="quizz.php";
+                        }
+                        else
+                        {
+                            alert("Exam starts at 8.30 AM");
+                        }
+                    }
+                    else if(examsession=='s2')
+                    {
+                        if(h==10 && m>=00)
+                        {
+                            window.location.href="quizz.php";
+                        }
+                        else
+                        {
+                            alert("Exam starts at 10.00 AM");
+                        }
+                    }
+                    else if(examsession=='s3'){
+                        if(h==11 && m>=30)
+                        {
+                            window.location.href="quizz.php";
+                        }
+                        else
+                        {
+                            alert("Exam starts at 11.30 AM");
+                        }
+                    }
+                    else if(examsession=='s4'){
+                        if(h==13 && m>=00)
+                        {
+                            window.location.href="quizz.php";
+                        }
+                        else
+                        {
+                            alert("Exam starts at 1.00 PM");
+                        }
+                    }
+                    else if(examsession=='s5'){
+                        if(h==14 && m>=30)
+                        {
+                            window.location.href="quizz.php";
+                        }
+                        else
+                        {
+                            alert("Exam starts at 2.30 PM");
+                        }
+                    }
+
+                    /*if(h>=20)
+                    {
+                        window.location.href="quizz.php";
+                    }*/
+                 }
+        
+                 document.addEventListener('contextmenu', function(event){
+                     event.preventDefault();
+              //alert("f11 if")   ;
+                });
+
+ 
+showdayanddate();
+/* date show ends here*/
+        </script>
+        </html>
+
+

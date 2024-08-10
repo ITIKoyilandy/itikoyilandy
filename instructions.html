@@ -1,0 +1,147 @@
+<?php
+    session_start();
+    if(isset($_SESSION['instructions']))
+    {
+        session_destroy();
+        session_start();
+        $_SESSION['password']='1';
+    }
+    else
+    {
+        session_destroy();
+        header('location:login.php');     
+    }
+   
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTS Model Examination - Govt. ITI Koyilandy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="jquery.js"></script>
+    <script src="date.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="date">
+            <p id="dateshow"></p>
+        </div>
+    </div>
+    <div class="subheader">
+        <img src="images/logo.png" alt="Logo" class="logo">
+        <div class="header-text">
+            <h1>CTS Model Examination - Govt. ITI Koyilandy</h1>
+        </div>
+    </div>
+    <div class="content">
+        <p id="welcomemessage">Welcome Candidate to CTS Examination - Practice Test</p>
+        <img src="images/user.png" alt="Candidate Image" class="candidate-image">
+        <div class="buttons">
+            <button class="instruction-button" id="showModalBtn">Show Instruction</button>
+            <button  id="btnproceed" disabled style="width:150px; height: 40px;font-size:16px;" onclick="window.location.href='password.html'">Proceed</button>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2>INSTRUCTIONS TO CANDIDATES</h2>
+            </div>
+            <div class="modal-body">
+                <h4> <u> ABOUT QUESTION PAPERS</u> </h4>
+                <p>1. Only one question will be displayed on the compter screen at a time</p>
+                <p>2. Each Question will have 4 alternatives</p>
+                <p>3. There is <b>no negative marking </b> for any wrong answer </p>
+                <p>4. The Question will be available in English Language</p>
+                <p>5. Candidates can attemp questions in any sequence by clicking on the question number in the section wise Summary Panel on the left hand side of the page </p>
+                <p>6. The exam screen will continuously display the remaining time at the right hand top of the question paper</p>
+                <p>7. The candidate may ask the Invigilator their doubts or questions before the commencement of the examination. No queries shall be entertained after the commencement of the examination </p>
+
+                <h4> <u> ABOUT ANSWERING THE QUESTIONS</u> </h4>
+                <p>1. Inorder to answer a question, you have to left click the option you think is appropriate /correct. The option which has been clicked on will be highlighted and shall be treated as the answer given by you for the question</p>
+                <p>2. If you do not wish to attemp the question then you should not click on any option for that question and may click <b> 'Next' </b> </p>
+                <p>3. You can navigate between questions either clicking on <b> 'Previous'/'Next'</b> button or by directly clicking on the question number which are displayed as attempted/ not-attempted in the <b>section wise summary</b> panel </p>
+                <p>4. You can <b>bookmark</b> questions to review before submitting</p>
+                
+                <h4> <u> ABOUT THE PREVIEW AND SUBMISSION</u> </h4>
+                <p>1. The answers are temporarily saved whenever the candidate navigates eg. by clicking on <b> "Next & Previous" buttons</b> </p>
+                <p>2. The candidate can make changes in their choice of alternative before clicking the done button </p>
+                <p>3. If the candidate wished to submit the test he/she has to click on the <b>"Done"</b> button </p>
+                <p>4. On clicking <b>"Done"</b>, there will be 3 warning screen displayed </p>
+                <p>5. In case if the candidate wants to return to the question paper, he/she can click on <b> "Go to Test"</b> otherwise he/she can <b>"Done"</b> to submit the test </p>
+                <p>6. After the expiry of exam time, the candidate will not be able to attempt any question or check their answers. The answers of the candidate would be automatically saved by the computer system even if he has not clicked the <b> Done </b> button.</p>
+                <h4> <u> Candidates can be debarred/ disqualified by the Center-in-charge for any of the following reasons</u> </h4>
+                <p>1. Creating disturbance </p>
+                <p>2. Impersonation-attemting to take the examination of someone else </p>
+                <p>3. Smoking or eating in the examination hall </p>
+                <p>4. Exachanging any papers, documents or any other materials with other candidates </p>
+                <p>5. Using prohibited aids, items not allowed such as:<b> Calculators, Cell phones, Pages, Piece of papers, any other electronic gadgets/ device</b></p>
+                <p>6. Attemting to access any unauthorized software/program during the examianation</p>
+                <p>7. Failing to follow invigilators instructions </p>
+                <h4 style="color:red"><input type="checkbox" id="agree"> I have read and understood the instructions. I agree that I am not carrying any prohibited gadget like mobile phone etc./ any prohibited materials with me into the exam hall. I agree that in case of not adhering to the instructions, I will be disqualified from taking the exam.</h4>
+                <div class="buttons">
+                    <button class="close-button" disabled id="closebtn" onclick="closemodal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script/modelscript.js"></script>
+    
+</body>
+
+<script>
+     $(document).ready(function(){
+        var rollno=sessionStorage.getItem('rollno');
+        document.getElementById('welcomemessage').innerHTML="Welcome Candidate Nasriya N S to CTS Model Examination";
+        
+     }); /* ends document ready function */
+
+
+
+showdayanddate();
+/* date show ends here*/
+
+
+/* CHECK BOX CLICK */
+document.addEventListener('DOMContentLoaded', (event)=>{
+            var checkbox=document.getElementById("agree");
+            var button=document.getElementById("closebtn");
+            function toggle(){
+                button.disabled=!checkbox.checked;
+            }
+            checkbox.addEventListener('change', toggle);
+            toggle();
+        });
+/* CHECK BOX ENDS */
+
+function closemodal()
+{
+    var button=document.getElementById("btnproceed");
+    button.disabled=false;
+    button.style.color="white";
+    button.style.backgroundColor="#0073b7";
+    button.style.border="none";
+    var modal=document.getElementById("myModal");
+    modal.style.display="none";
+   
+}
+
+document.addEventListener('contextmenu', function(event){
+   event.preventDefault();
+      //alert("f11 if")   ;
+  
+});
+ 
+window.history.pushState(null, "", window.location.href);
+window.addEventListener('popstate', function(){
+    window.history.pushState(null, "", window.location.href);
+});
+
+</script>
+</html>

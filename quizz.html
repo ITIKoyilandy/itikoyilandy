@@ -1,0 +1,824 @@
+<?php
+    session_start();
+    if(isset($_SESSION['quizz']))
+    {
+        session_destroy();
+    }
+    else
+    {
+        session_destroy();
+        header('location:login.php');
+        
+    }   
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Mock Test - ITI Koyilandy</title>
+    <script src="script/script4.js"></script>
+    <script src="jquery.js"></script>
+    <link rel="stylesheet" href="stylesformodal.css">
+    <style type="text/css">
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+         }
+         #header-div{
+            width:100%;
+            min-height: 50px;
+            background-color: lightgray;
+            line-height:50px;
+            padding-left: 4%;
+         }
+         .button{
+            /*display: inline-block;*/
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: 1px;
+            width:25px;
+            text-align: center;
+         }
+         #logo{
+            width:30%;
+            float: left;
+            color: white;
+        
+         }
+         #details{
+            width: 55%;
+            float: left;
+         }
+         .timerbox{
+            width:15%;
+            float:left;
+            background-color: green;
+            color:white;
+            padding-left: 15px;
+            font-size: 20px;
+            border-radius: 4px;
+         }
+
+         #timer-div{
+            width:100%;
+            min-height:50px;
+            background-color: aqua;
+            line-height: 50px;
+            text-align: right;
+            padding-right: 10%;
+         }
+         #main-div{
+            width: 100%;
+         }
+
+         #questions-div{
+            width:70%;
+            min-height: 600px;
+            float: left;
+           padding-left: 20px;
+            padding-right: 30px;
+            border: 1px solid #444;
+         }
+         #sidebar-div{
+            width:30%;
+            min-height: 600px;
+            float: left;
+            margin-top: 20px;
+            border: 1px solid #444;
+            /*background-color: brown;*/
+         }
+         #model1{
+            width:100%;
+            min-height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color:blue ;
+            margin-top: 4px;
+            margin-bottom: 5px;
+            color: white;
+         }
+         #label-sub{
+            width:100%;
+            min-height: 40px;
+            line-height: 40px;
+            text-align: left;
+            background-color:blue ;
+            display: block;
+           margin-bottom: 10px;
+           margin-top: 10px;
+            border-radius: 10px;
+            padding-left: 10px;
+            color:white;
+         }
+         #model2{
+            width:100%;
+            min-height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color:blue ;
+            display: block;
+           margin-bottom: 10px;
+           margin-top: 10px;
+           color: white;
+         }
+         #model3{
+            width:100%;
+            min-height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color:blue ;
+           
+           margin-bottom: 10px;
+           margin-top: 10px;
+           color: white;
+         }
+         #tt-buttons{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            
+         }
+         #es-buttons{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display:none;
+         }
+
+         .questionbox{
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+        .questionimage{
+        
+        }
+        .optionsbox{
+            display: grid;
+            grid-template-columns: 1fr;
+            margin: 30px 0;
+            grid-gap: 15px;
+        }
+
+        .buttons{
+           
+            text-align:center;
+            text-decoration:none;
+            margin-right:10px;
+            margin-bottom: 10px;
+            cursor:pointer;
+            width:25px;
+            height:25px;
+        }
+        .optionsbox span{
+            /*background-color: #ccc;
+            border-radius: 10px;
+            color:#444;
+            border: 1px solid #444;*/
+            padding: 10px 15px;
+        }
+
+        .footer{
+            /*display: flex;
+            justify-content: space-between;*/
+
+        }
+
+        .footer button, #done button{
+            background-color: #1da3dd;
+            border-radius: 5px;
+            padding: 7px 15px;
+            color:#fff;
+            border: 0;
+            outline: none;
+            font-size: 20px;
+            
+        }
+
+
+    </style>
+    
+</head>
+<body>
+    <div id="header-div">
+        <div id="logo"><img src="images/itilogo.png"><b style="color: white;">&nbsp; &nbsp; &nbsp;GOVT. ITI KOYILANDY</b></div>
+        <div id="details"><b> 
+         Roll No: <span id="traineeno" style="color: #008080;"> </span>
+         &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; Name of Trainee: <span id="traineename"  style="color: #008080;">
+            
+        </span>   &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; Trade: <span id="trade" style="color: #008080;"></span></b> </div>
+        <div class="timerbox">
+           <b> Time Left : </b><span id="timertext">  </span>
+        </div>
+    </div>
+    <div id="main-div">
+        <div id="sidebar-div">
+            <div id="model1">
+                    Models
+            </div>
+            <div id="options-indicator">
+                <img src="images/attended.jpg">
+                <br>
+                <img src="images/notattended.png">
+                <br>
+                <img src="images/review.png">
+            </div>
+            <div id="model2" onclick="toggleDiv(1)">
+                Trade Theory
+            </div>
+            <div id="tt-buttons">
+                <input type="button" value=" 1 " class="buttons" onclick="directquestions(1)" id="btn0">
+                <input type="button" value=" 2 " class="buttons" onclick="directquestions(2)" id="btn1">
+                <input type="button" value=" 3 " class="buttons" onclick="directquestions(3)" id="btn2">
+                <input type="button" value=" 4 " class="buttons" onclick="directquestions(4)" id="btn3">
+                <input type="button" value=" 5 " class="buttons" onclick="directquestions(5)" id="btn4">
+                <input type="button" value=" 6 " class="buttons" onclick="directquestions(6)" id="btn5">
+                <input type="button" value=" 7 " class="buttons" onclick="directquestions(7)" id="btn6">
+                <input type="button" value=" 8 " class="buttons" onclick="directquestions(8)" id="btn7">
+                <input type="button" value=" 9 " class="buttons" onclick="directquestions(9)" id="btn8">
+                <input type="button" value=" 10 "  class="buttons" onclick="directquestions(10)" id="btn9">
+                <input type="button" value=" 11 " class="buttons" onclick="directquestions(11)" id="btn10">
+                <input type="button" value=" 12 " class="buttons" onclick="directquestions(12)" id="btn11">
+                <input type="button" value=" 13 " class="buttons" onclick="directquestions(13)" id="btn12">
+                <input type="button" value=" 14 " class="buttons" onclick="directquestions(14)" id="btn13">
+                <input type="button" value=" 15 " class="buttons" onclick="directquestions(15)" id="btn14">
+                <input type="button" value=" 16 " class="buttons" onclick="directquestions(16)" id="btn15">
+                <input type="button" value=" 17 " class="buttons" onclick="directquestions(17)" id="btn16">
+                <input type="button" value=" 18 " class="buttons" onclick="directquestions(18)" id="btn17">
+                <input type="button" value=" 19 " class="buttons" onclick="directquestions(19)" id="btn18">
+                <input type="button" value=" 20 " class="buttons" onclick="directquestions(20)" id="btn19">
+                <input type="button" value=" 21 " class="buttons" onclick="directquestions(21)" id="btn20">
+                <input type="button" value=" 22 " class="buttons" onclick="directquestions(22)" id="btn21">
+                <input type="button" value=" 23 " class="buttons" onclick="directquestions(23)" id="btn22">
+                <input type="button" value=" 24 " class="buttons" onclick="directquestions(24)" id="btn23">
+                <input type="button" value=" 25 " class="buttons" onclick="directquestions(25)" id="btn24">
+                <input type="button" value=" 26 " class="buttons" onclick="directquestions(26)" id="btn25">
+                <input type="button" value=" 27 " class="buttons" onclick="directquestions(27)" id="btn26">
+                <input type="button" value=" 28 " class="buttons" onclick="directquestions(28)" id="btn27">
+                <input type="button" value=" 29 " class="buttons" onclick="directquestions(29)" id="btn28">
+                <input type="button" value=" 30 " class="buttons" onclick="directquestions(30)" id="btn29">
+                <input type="button" value=" 31 " class="buttons" onclick="directquestions(31)" id="btn30">
+                <input type="button" value=" 32 " class="buttons" onclick="directquestions(32)" id="btn31">
+                <input type="button" value=" 33 " class="buttons" onclick="directquestions(33)" id="btn32">
+                <input type="button" value=" 34 " class="buttons" onclick="directquestions(34)" id="btn33">
+                <input type="button" value=" 35 " class="buttons" onclick="directquestions(35)" id="btn34">
+                <input type="button" value=" 36 " class="buttons" onclick="directquestions(36)" id="btn35">
+                <input type="button" value=" 37 " class="buttons" onclick="directquestions(37)" id="btn36">
+                <input type="button" value=" 38 " class="buttons" onclick="directquestions(38)" id="btn37">
+                <input type="button" value=" 39 " class="buttons" onclick="directquestions(39)" id="btn38">
+                <input type="button" value=" 40 " class="buttons" onclick="directquestions(40)" id="btn39">
+                <input type="button" value=" 41 " class="buttons" onclick="directquestions(41)" id="btn40">
+                <input type="button" value=" 42 " class="buttons" onclick="directquestions(42)" id="btn41">
+                <input type="button" value=" 43 " class="buttons" onclick="directquestions(43)" id="btn42">
+                <input type="button" value=" 44 " class="buttons" onclick="directquestions(44)" id="btn43">
+                <input type="button" value=" 45 " class="buttons" onclick="directquestions(45)" id="btn44">
+                <input type="button" value=" 46 " class="buttons" onclick="directquestions(46)" id="btn45">
+                <input type="button" value=" 47 " class="buttons" onclick="directquestions(47)" id="btn46">
+                <input type="button" value=" 48 " class="buttons" onclick="directquestions(48)" id="btn47">
+                <input type="button" value=" 49 " class="buttons" onclick="directquestions(49)" id="btn48">
+                <input type="button" value=" 50 " class="buttons" onclick="directquestions(50)"  id="btn49">
+            </div>
+            <div id="model3" onclick="toggleDiv(2)">
+                Employability Skills
+            </div>
+            <div id="es-buttons">
+            <!--
+            <input type="button" value=" 1 " class="buttons" onclick="directquestions(21)" id="btn20">
+                <input type="button" value=" 2 " class="buttons" onclick="directquestions(22)" id="btn21">
+                <input type="button" value=" 3 " class="buttons" onclick="directquestions(23)" id="btn22">
+                <input type="button" value=" 4 " class="buttons" onclick="directquestions(24)" id="btn23">
+                <input type="button" value=" 5 " class="buttons" onclick="directquestions(25)" id="btn24">
+                <input type="button" value=" 6 " class="buttons" onclick="directquestions(26)" id="btn25">
+                <input type="button" value=" 7 " class="buttons" onclick="directquestions(27)" id="btn26">
+                <input type="button" value=" 8 " class="buttons" onclick="directquestions(28)" id="btn27">
+                <input type="button" value=" 9 " class="buttons" onclick="directquestions(29)" id="btn28">
+                <input type="button" value=" 10 " class="buttons" onclick="directquestions(30)" id="btn29">
+
+            -->
+                <input type="button" value=" 1 " class="buttons" onclick="directquestions(51)" id="btn50">
+                <input type="button" value=" 2 " class="buttons" onclick="directquestions(52)" id="btn51">
+                <input type="button" value=" 3 " class="buttons" onclick="directquestions(53)" id="btn52">
+                <input type="button" value=" 4 " class="buttons" onclick="directquestions(54)" id="btn53">
+                <input type="button" value=" 5 " class="buttons" onclick="directquestions(55)" id="btn54">
+                <input type="button" value=" 6 " class="buttons" onclick="directquestions(56)" id="btn55">
+                <input type="button" value=" 7 " class="buttons" onclick="directquestions(57)" id="btn56">
+                <input type="button" value=" 8 " class="buttons" onclick="directquestions(58)" id="btn57">
+                <input type="button" value=" 9 " class="buttons" onclick="directquestions(59)" id="btn58">
+                <input type="button" value=" 10 " class="buttons" onclick="directquestions(60)" id="btn59">
+                <input type="button" value=" 11 " class="buttons" onclick="directquestions(61)" id="btn60">
+                <input type="button" value=" 12 " class="buttons" onclick="directquestions(62)" id="btn61">
+                <input type="button" value=" 13 " class="buttons" onclick="directquestions(63)" id="btn62">
+                <input type="button" value=" 14 " class="buttons" onclick="directquestions(64)" id="btn63">
+                <input type="button" value=" 15 " class="buttons" onclick="directquestions(65)" id="btn64">
+                <input type="button" value=" 16 " class="buttons" onclick="directquestions(66)" id="btn65">
+                <input type="button" value=" 17 " class="buttons" onclick="directquestions(67)" id="btn66">
+                <input type="button" value=" 18 " class="buttons" onclick="directquestions(68)" id="btn67">
+                <input type="button" value=" 19 " class="buttons" onclick="directquestions(69)" id="btn68">
+                <input type="button" value=" 20 " class="buttons" onclick="directquestions(70)" id="btn69">
+                <input type="button" value=" 21 " class="buttons" onclick="directquestions(71)" id="btn70">
+                <input type="button" value=" 22 " class="buttons" onclick="directquestions(72)" id="btn71">
+                <input type="button" value=" 23 " class="buttons" onclick="directquestions(73)" id="btn72">
+                <input type="button" value=" 24 " class="buttons" onclick="directquestions(74)" id="btn73">
+                <input type="button" value=" 25 " class="buttons" onclick="directquestions(75)" id="btn74">
+    
+            </div>
+        </div>
+        <div id="questions-div">
+            <div id="label1-sub"  style="margin-top: 20px; line-height: 20px; min-height: 20px;"><input type="button" style="background-color: blue; width: 20px; height: 20px; margin-right: 10px;"><b><span id="subject"> Trade Theory </span></b>
+            <span style="float:right"><input type="checkbox" onclick="reviewcheckbox()" id="btnreview"><b style="padding-left: 5px; color: blue;">Mark for Review </b></span>
+
+            </div>
+            <div id="label-sub">
+            </div>
+            <div class="questionbox" id="qb">
+                <!--Who is known as the father of computer? -->
+            </div>
+            <div class="questionimage" id="qbimage">
+                <!--image is here -->
+            </div>
+            <div class="optionsbox">
+                
+                <span>(A) <input type="radio" name="options" id="opt1radio" onclick="saveoption1()"> <span id="opt1"></span></span>
+                <span>(B) <input type="radio" name="options" id="opt2radio" onclick="saveoption2()"> <span id="opt2"></span></span>
+                <span>(C) <input type="radio" name="options" id="opt3radio" onclick="saveoption3()"> <span id="opt3"></span></span>
+                <span>(D) <input type="radio" name="options" id="opt4radio" onclick="saveoption4()"> <span id="opt4"></span></span>
+                
+            </div>
+            <div>
+            <div class="footer">
+                <button onclick="next()" id="btnnext">Next</button>
+                <button onclick="prev()" id="btnprev">Previous</button>
+                <!--<input type="checkbox" onclick="review()" id="btnreview">Mark for Review -->
+                <button id="btndone" style="float: right; background-color: #FF0000;">Done</button>
+                <button id="savedata" style="display:none;"> Save</buton>
+                <button id="saveselected" style="display:none;"> SaveSelectedOptions</buton>
+            </div>
+          
+        </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        function toggleDiv(flag)
+        {
+            if(flag==1){
+                var div=document.getElementById("tt-buttons");
+            }
+            else{
+                var div=document.getElementById("es-buttons");
+            }
+            
+            if(div.style.display==="block")
+            {
+                div.style.display="none";
+            }
+            else{
+                div.style.display="block";
+            }
+        }
+        
+        /* ajax code */
+        
+
+            $(document).ready(function(){
+                start();
+                document.getElementById("traineeno").innerHTML=  sessionStorage.getItem('rollno');
+                document.getElementById("traineename").innerHTML=  sessionStorage.getItem('name');
+                document.getElementById("trade").innerHTML=  sessionStorage.getItem('trade');
+                var rollno=sessionStorage.getItem('rollno') ;
+                //document.getElementById("btndone").style.visibility='hidden';
+                document.getElementById("btnprev").style.visibility='hidden';
+                    
+                        p=0;
+   
+        loadquestions(0);
+   
+                    
+
+        
+        /* btndone starts here */
+        $('#savedata').click(function(){
+
+                var rollno=sessionStorage.getItem('rollno');
+                trade=sessionStorage.getItem('trade');
+                year=sessionStorage.getItem('year');
+                var today=new Date();
+                var day=today.getDate();
+                var month=today.getMonth()+1;
+                var yr=today.getFullYear();
+
+                dateofexam=yr+"-"+month+"-"+day;
+                /* calls save data locally ***/
+             if(navigator.onLine==false){
+              //savedata(rollno, trade, year, dateofexam);
+             }
+
+                
+                //for(i=0; i<30;i++){
+                
+                //qid=qID[i];
+                //alert(qID[i]);
+                //opt=optchoosen[i];
+                //optcorrect=optcor[i];
+                //sub=subject[i];
+                //alert(subject[i]);
+                //alert(opt);
+               
+
+           
+            if(timerstop){
+                alert("Time is Over. Exam will close and Answers will save automatically")
+            }
+        window.location.href="thankyou.php";
+
+   });   /*btndone ends here */
+
+
+   /* btn save options starts here */
+   
+    
+});
+
+function shuffle(array)
+{
+    event.preventDefault();
+    for(i=array.length-1; i>0; i--){
+        j=Math.floor(Math.random()*(i+1));
+        [array[i], array[j]]=[array[j], array[i]];
+    }
+    return array;
+}
+
+function reviewcheckbox()
+{
+    var chk=document.getElementById("btnreview");
+    review[p]=false;
+    if(chk.checked){
+        document.getElementById("btn"+(p)).style.background="blue";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+        review[p]=true;
+    }
+    else if(document.getElementById("opt4radio").checked===false && document.getElementById("opt3radio").checked===false && document.getElementById("opt2radio").checked===false && document.getElementById("opt1radio").checked===false)
+    {
+        document.getElementById("btn"+(p)).style.background="red";
+        document.getElementById("btn"+(p)).style.color="white";
+        
+    }
+    else
+    {
+        document.getElementById("btn"+(p)).style.background="green";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+    }
+}
+
+function loadquestions(index)
+{
+    document.getElementById("opt1radio").checked=false;
+    document.getElementById("opt2radio").checked=false;
+    document.getElementById("opt3radio").checked=false;
+    document.getElementById("opt4radio").checked=false;
+    //var a=[1,2,3,4];
+    //a=shuffle(a);
+
+    document.getElementById("qb").innerHTML=d[index];
+    
+    document.getElementById("qbimage").innerHTML="";
+   
+    document.getElementById("opt1").innerHTML=opt1[index];
+    document.getElementById("opt2").innerHTML=opt2[index];
+    document.getElementById("opt3").innerHTML=opt3[index];
+    document.getElementById("opt4").innerHTML=opt4[index];
+    document.getElementById("label-sub").innerHTML="Question No: " + (index+1) +" / Question ID: " +  qID[p];
+    cc=index;
+    
+    document.getElementById("opt1radio").value=opt1[index];
+    document.getElementById("opt2radio").value=opt2[index];
+    document.getElementById("opt3radio").value=opt3[index];
+    document.getElementById("opt4radio").value=opt4[index];
+
+
+    if(optchoosen[index]!==undefined )
+    {
+        
+        if(optchoosen[index]===opt1[index])
+        {
+            document.getElementById("opt1radio").checked=true;
+        }
+        else if(optchoosen[index]==opt2[index])
+        {
+            document.getElementById("opt2radio").checked=true;
+        }
+        else if(optchoosen[index]==opt3[index])
+        {
+            document.getElementById("opt3radio").checked=true;
+        }
+        else if(optchoosen[index]==opt4[index])
+        {
+            document.getElementById("opt4radio").checked=true;
+        }
+    }
+    p=index;
+}
+
+function next()
+{
+    event.preventDefault();
+    document.getElementById("btnprev").style.visibility='visible';
+    if(p>49)
+    {
+        document.getElementById("subject").innerHTML="Employability Skills";
+    }
+    else
+    {
+        document.getElementById("subject").innerHTML="Trade Theory";
+    }
+
+    if(p==74)
+    {
+        document.getElementById("btnnext").style.visibility='hidden';
+    }
+    else
+    {
+        document.getElementById("btnnext").style.visibility='visible';
+    
+        if(document.getElementById("opt4radio").checked===false && document.getElementById("opt3radio").checked===false && document.getElementById("opt2radio").checked===false && document.getElementById("opt1radio").checked===false)
+        {
+            var chk=document.getElementById("btnreview");
+            if(!chk.checked){
+                    document.getElementById("btn"+(p)).style.background="red";
+                    document.getElementById("btn"+(p)).style.color="white";
+            }
+        }
+        $('#saveselected').trigger('click');
+        p++;
+        loadquestions(p);
+        var chk=document.getElementById("btnreview");         
+        chk.checked=review[p];
+        
+    }
+}
+
+
+function prev()
+{
+    event.preventDefault();
+    document.getElementById("btnnext").style.visibility='visible';
+    if(p>49)
+    {
+        document.getElementById("subject").innerHTML="Employability Skills";
+    }
+    else
+    {
+        document.getElementById("subject").innerHTML="Trade Theory";
+    }
+
+    if(p==0)
+    {
+        document.getElementById("btnprev").style.visibility='hidden';
+    }
+    else
+    {
+        if(document.getElementById("opt4radio").checked===false && document.getElementById("opt3radio").checked===false && document.getElementById("opt2radio").checked===false && document.getElementById("opt1radio").checked===false)
+        {
+            
+            if(review[p]==false){
+                    document.getElementById("btn"+(p)).style.background="red";
+                    document.getElementById("btn"+(p)).style.color="white";
+            }
+        }
+        
+            p--;
+            loadquestions(p);
+            var chk=document.getElementById("btnreview");
+            chk.checked=review[p];
+    }
+   
+    //document.getElementById("btnnext").enabled=true;
+}
+
+function directquestions(index)
+{
+    event.preventDefault();
+    if(index==1)
+    {
+        document.getElementById("btnprev").style.visibility='hidden';
+        document.getElementById("btnnext").style.visibility='visible';
+    }
+    else if(index==75)
+    {
+        document.getElementById("btnnext").style.visibility='hidden';
+        document.getElementById("btnprev").style.visibility='visible';
+    }
+    else
+    {
+        document.getElementById("btnprev").style.visibility='visible'; 
+        document.getElementById("btnnext").style.visibility='visible';
+    }
+
+
+    //var a=[1,2,3,4];
+    //a=shuffle(a);
+    /*
+    if(index==75)
+    {
+        document.getElementById("btndone").style.visibility='visible';
+    }
+    else
+    {
+        document.getElementById("btndone").style.visibility='hidden';
+    }
+    */
+
+    /* clear radio buttons */
+    
+    if(index>50)
+    {
+        document.getElementById("subject").innerHTML="Employability Skills";
+    }
+    else
+    {
+        document.getElementById("subject").innerHTML="Trade Theory";
+    }
+    
+    p=--index;
+    loadquestions(p);
+    var chk=document.getElementById("btnreview");
+    chk.checked=review[p];
+}
+
+function saveoption1()
+{
+    var ele=document.getElementById("opt1radio");
+    optchoosen[p]=ele.value;
+    var chk=document.getElementById("btnreview");
+    if(chk.checked==false){
+        document.getElementById("btn"+(p)).style.background="#008000";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+    }
+
+    
+}
+function saveoption2()
+{
+    var ele=document.getElementById("opt2radio");
+    optchoosen[p]=ele.value;
+    var chk=document.getElementById("btnreview");
+    if(chk.checked==false){
+        document.getElementById("btn"+(p)).style.background="#008000";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+    }
+    
+}
+function saveoption3()
+{
+    var ele=document.getElementById("opt3radio");
+    optchoosen[p]=ele.value;
+    var chk=document.getElementById("btnreview");
+    if(chk.checked==false){
+        document.getElementById("btn"+(p)).style.background="#008000";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+    }
+    
+}
+function saveoption4()
+{
+    var ele=document.getElementById("opt4radio");
+    optchoosen[p]=ele.value;
+    var chk=document.getElementById("btnreview");
+    if(chk.checked==false){
+        document.getElementById("btn"+(p)).style.background="#008000";
+        document.getElementById("btn"+(p)).style.color="white";
+        document.getElementById("btn"+(p)).style.borderRadius="50% / 25%";
+    }
+   
+}
+/*
+function openFullscreen()
+{
+    if(document.documentElement.requestFullscreen)
+    {
+        document.documentElement.requestFullscreen();
+    }
+    else if(document.documentElement.mozRequestFullscreen)
+    {
+        document.documentElement.mozRequestFullscreen();
+    }
+    else if(document.documentElement.webkitRequestFullscreen)
+    {
+        document.documentElement.webkitRequestFullscreen();
+    }
+    
+}
+
+/*
+window.onbeforeunload=function()
+{
+    return "r u sure";
+};
+
+document.addEventListener('visibilitychange', function(){
+    if(document.hidden){
+        alert('switching tabs not allowed');
+    }
+});
+*/
+/*
+function preventback(){
+    window.history.forward();
+}
+setTimeout("preventback()", 0);
+window.onunload=function(){null};
+
+*/
+
+function togglefullscreen()
+{
+
+}
+document.addEventListener('contextmenu', function(event){
+   
+     event.preventDefault();
+        //alert("f11 if")   ;
+    
+});
+window.history.pushState(null, "", window.location.href);
+window.addEventListener('popstate', function(){
+    window.history.pushState(null, "", window.location.href);
+});
+
+function escapestring(str)
+{
+    if(str !=null && str != undefined)
+    {
+        if(str.includes("'"))
+        {
+            return str.replace(/'/g, "''");
+        }
+    }
+    else
+    { 
+        return str;
+    }
+}
+
+function savedata(rno, trade, year, doe)
+        {
+            let sql="insert into tblanswers(`rollno`,`QID`, `AttendedAnswer`, `optionCorrect`, `trade`, `year`,`dateofexam`, `sub` ) values\n";
+            for(i=0; i<75;i++){
+                
+                qid=qID[i];
+                opt=optchoosen[i];
+                optcorrect=optcor[i];
+                sub=subject[i];
+                
+            /*const x=[
+            {rollno: rno, qid:qid, Attended:opt, optc: optcorrect, trade: trade, year: year,doe:doe , sub: sub}
+            ]
+           
+            x.forEach((row, index)=>{
+            */
+                sql+=`('${rno}', '${qid}', '${opt}', '${optcorrect}', '${trade}', '${year}', '${doe}' , '${sub}'  )`;
+                sql+=(i<74)?",\n": ";\n";
+            /*});*/
+        }
+            const blob=new Blob([sql], {type: 'text/sql'});
+            const a=document.createElement('a');
+            a.href=URL.createObjectURL(blob);
+            const filenamefordownload="data"+rno+".sql";
+            a.download=filenamefordownload;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        
+    </script>
+
+<div id="myModalendexam" class="modal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h3>FINISH TEST</h3>
+            </div>
+            <div class="modal-body">
+                <h4>  Are You sure do you want to Finish Test </h4>
+            
+                <button class="backtotest" id="btnbacktotest"> Back to Test </button>
+                <button class="finishtest" id="btnfinishtest"> Finish Test </button>
+                
+            </div>
+        </div>
+    </div>
+    <script src="script/modelscriptforfinish.js"></script>
+    <script src="script/questionsforcbt.js"></script>
+
+</body>
+</html>
